@@ -28,7 +28,6 @@ public class PlayerScript : MonoBehaviour
         vertical = Input.GetAxis("Vertical");
 
         direction = new Vector3(horizontal, 0, vertical);
-
         if(!cursorFree) Cursor.lockState = CursorLockMode.Locked;
 
         this.rotation = new Vector3(0, horizontal * 180 * Time.deltaTime, 0);
