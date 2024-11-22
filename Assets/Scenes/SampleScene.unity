@@ -639,10 +639,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  mouseSensitivity: 1
+  snappiness: 100
+  upDownRange: 0
   cursorFree: 0
+  retroMovement: 0
   control: {fileID: 1259424986}
   mainCam: {fileID: 963194225}
   rotation: {x: 0, y: 0, z: 0}
+  move: {x: 0, y: 0, z: 0}
 --- !u!143 &1259424986
 CharacterController:
   m_ObjectHideFlags: 0
