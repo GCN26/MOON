@@ -19,7 +19,7 @@ public class PlayerScript : MonoBehaviour
     public bool cursorFree,retroMovement;
 
     public CharacterController control;
-    public GameObject mainCam;
+    public GameObject mainCam,gunObject;
 
     //Item Variables
     public bool redKey, blueKey, yellowKey;
@@ -33,7 +33,11 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         PlayerMovement();
-        
+        Debug.DrawRay(mainCam.transform.position, transform.TransformDirection(Vector3.forward) * 25, Color.blue);
+        if (Input.GetButtonDown("Fire1"))
+        {
+            PlayerShoot();
+        }
     }
 
     public void PlayerMovement()
@@ -78,7 +82,20 @@ public class PlayerScript : MonoBehaviour
         this.transform.Rotate(this.rotation);
     }
 
-    //Weapon Shoot Script - Allow for different weapons
+    public void PlayerShoot()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 25))
+        {
+            Debug.Log(hit.transform.name);
+            Debug.Log("hit");
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                Destroy(hit.collider.gameObject);
+            }
+        }
+    }
 
     public void keyCollect(int keyColor)
     {
