@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    //Movement Variables
+    [Header("Movement")]
     public float speed = 5.0f;
     public float jumpSpeed = 1f;
 
@@ -13,17 +13,20 @@ public class PlayerScript : MonoBehaviour
     public Vector3 inputs = Vector3.zero;
     public Vector3 rotation, move;
 
-    //Camera Variables
+    [Header("Camera")]
     private float rotX,rotY,xVelocity,yVelocity;
     public float mouseSensitivity, joyCamSensitivity, snappiness, upDownRange;
     public bool cursorFree,retroMovement;
 
+    [Header("GameObjects")]
     public CharacterController control;
     public GameObject mainCam,gunObject;
 
-    //Item Variables
-    public bool redKey, blueKey, yellowKey;
-    
+    [Header("Items")]
+    public bool redKey;
+    public bool blueKey;
+    public bool yellowKey;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +39,7 @@ public class PlayerScript : MonoBehaviour
         Debug.DrawRay(mainCam.transform.position, transform.TransformDirection(Vector3.forward) * 25, Color.blue);
         if (Input.GetButtonDown("Fire1"))
         {
-            PlayerShoot();
+            gunObject.GetComponent<GunScript>().TriggerGun();
         }
     }
 
@@ -80,21 +83,6 @@ public class PlayerScript : MonoBehaviour
         move = this.transform.TransformDirection(move);
         control.Move(move * Time.deltaTime);
         this.transform.Rotate(this.rotation);
-    }
-
-    public void PlayerShoot()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 25))
-        {
-            Debug.Log(hit.transform.name);
-            Debug.Log("hit");
-            if (hit.collider.CompareTag("Enemy"))
-            {
-                Destroy(hit.collider.gameObject);
-            }
-        }
     }
 
     public void keyCollect(int keyColor)
