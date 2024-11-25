@@ -34,6 +34,9 @@ public class EnemyMovement : MonoBehaviour
     public Vector3 startPos;
 
     public float maxPatrolLen,distFromStart;
+    public float HP;
+    public float deadTimer;
+    public float deadTimerTarget = 2.5f;
     
 
     public enum EnemyStates { Idle, Patrol, Chase, Attack, Dead };
@@ -87,6 +90,7 @@ public class EnemyMovement : MonoBehaviour
                 Debug.Log("State not recognized"); break;
         }
 
+        if (HP <= 0) currentState = EnemyStates.Dead;
         playerDist = Vector3.Distance(this.transform.position, target.position);
     }
 
@@ -108,6 +112,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void Idle()
     {
+        
         idleWaitTimeCounter += Time.deltaTime;
         if (IsTargetVisible())
         {
@@ -122,7 +127,6 @@ public class EnemyMovement : MonoBehaviour
     }
     private void Patrol()
     {
-        
         distFromStart = Vector3.Distance(this.transform.position, startPos);
         if (distFromStart > maxPatrolLen)
         {
@@ -161,6 +165,13 @@ public class EnemyMovement : MonoBehaviour
     }
     private void Dead()
     {
+        deadTimer += Time.deltaTime;
+        gameObject.GetComponent<Collider>().enabled = false;
+        agent.destination = transform.position;
 
+        if (deadTimer > deadTimerTarget)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

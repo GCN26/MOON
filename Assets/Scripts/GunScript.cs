@@ -22,6 +22,8 @@ public class GunScript : MonoBehaviour
 
     public Material PistolMaterial,ShotgunMaterial;
 
+    public float gunDamage;
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelectedGun = Gun.Pistol;
@@ -30,10 +32,12 @@ public class GunScript : MonoBehaviour
         if(SelectedGun == Gun.Pistol)
         {
             GetComponent<MeshRenderer>().material = PistolMaterial;
+            gunDamage = 2;
         }
         else if (SelectedGun == Gun.Shotgun)
         {
             GetComponent<MeshRenderer>().material = ShotgunMaterial;
+            gunDamage = 1;
         }
     }
 
@@ -56,14 +60,10 @@ public class GunScript : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, pistolRange))
         {
-            Debug.Log(hit.transform.name);
-            Debug.Log("hit");
             var mark = Instantiate(hitMarker);
             mark.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-            if (hit.collider.CompareTag("Enemy"))
-            {
-                Destroy(hit.collider.gameObject);
-            }
+
+            calcHitEnemy(hit);
         }
     }
     public void ShotgunShoot()
@@ -77,14 +77,10 @@ public class GunScript : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, shotgunRange))
             {
-                Debug.Log(hit.transform.name);
-                Debug.Log("hit");
                 var mark = Instantiate(hitMarker);
                 mark.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-                if (hit.collider.CompareTag("Enemy"))
-                {
-                    Destroy(hit.collider.gameObject);
-                }
+
+                calcHitEnemy(hit);
             }
         }
     }
@@ -135,6 +131,14 @@ public class GunScript : MonoBehaviour
         {
             shotgunOffset.x = 0;
             shotgunOffset.y = -shotgunSpread;
+        }
+    }
+
+    public void calcHitEnemy(RaycastHit hit)
+    {
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            hit.collider.GetComponent<EnemyMovement>().HP -= gunDamage;
         }
     }
 }
