@@ -1519,10 +1519,12 @@ MonoBehaviour:
   shotgunModel: {fileID: 145561479}
   shotgunMesh: {fileID: 1325034471}
   pumpMesh: {fileID: 854715060}
-  switchTo: 0
   gunSpinSpeed: 7.2
+  switchTo: 0
   reloading: 0
   pumpNoEject: 0
+  shootRotBool: 0
+  shootRotBool2: 0
   pistolMag: 0
   pistolReserve: 0
   shotgunLoad: 0
@@ -1922,6 +1924,75 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8f6da1505ffb9d84c8379bad4240aef3, type: 3}
   m_PrefabInstance: {fileID: 195267871}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &484472702944534536
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5527552434172167268, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_Name
+      value: Skybox
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -35.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580142042494375569, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 96ddcc182ae99be4492facb2da15edac, type: 3}
 --- !u!1001 &2309284240690099779
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1992,3 +2063,4 @@ SceneRoots:
   - {fileID: 546400708}
   - {fileID: 1573938292}
   - {fileID: 2309284240690099779}
+  - {fileID: 484472702944534536}
