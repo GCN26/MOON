@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 3724428692170154315}
   - component: {fileID: 3785027714740042566}
   - component: {fileID: 6905473646659195001}
+  - component: {fileID: 9015796183131991735}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: BulletMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &9015796183131991735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5024512782315302133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a0ea619e920ec478c8d27ffa819d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 0

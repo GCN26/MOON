@@ -23,7 +23,7 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("Combat")]
     public float combatCooldown;
-    private float combatCooldownCounter = 0;
+    //private float combatCooldownCounter = 0;
     [Header("Idling Time")]
     public float idleWaitTime;
     private float idleWaitTimeCounter = 0;
@@ -59,7 +59,7 @@ public class EnemyMovement : MonoBehaviour
             }
             else if (value == EnemyStates.Attack)
             {
-                combatCooldownCounter = 0;
+                //combatCooldownCounter = 0;
             }
             _currentState = value;
         }
