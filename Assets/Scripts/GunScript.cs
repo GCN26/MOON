@@ -28,6 +28,7 @@ public class GunScript : MonoBehaviour
     public float gunDamage;
 
     public GameObject shotgunModel,shotgunMesh, pumpMesh;
+    public GameObject pistolModel, pistolMesh, slideMesh, magMesh;
     public float gunSpinSpeed;
 
     private Quaternion startingRot;
@@ -69,7 +70,9 @@ public class GunScript : MonoBehaviour
 
         if(SelectedGun == Gun.Pistol)
         {
-            GetComponent<MeshRenderer>().enabled = true;
+            pistolMesh.GetComponent<SkinnedMeshRenderer>().enabled = true;
+            slideMesh.GetComponent<SkinnedMeshRenderer>().enabled = true;
+            magMesh.GetComponent<SkinnedMeshRenderer>().enabled = true;
             shotgunMesh.GetComponent<MeshRenderer>().enabled = false;
             pumpMesh.GetComponent<MeshRenderer>().enabled = false;
             gunDamage = 2;
@@ -82,7 +85,9 @@ public class GunScript : MonoBehaviour
                 shotgunModel.GetComponent<ShotgunAnimationScript>().eject = false;
                 switchTo = false;
             }
-            GetComponent<MeshRenderer>().enabled = false;
+            pistolMesh.GetComponent<SkinnedMeshRenderer>().enabled = false;
+            slideMesh.GetComponent<SkinnedMeshRenderer>().enabled = false;
+            magMesh.GetComponent<SkinnedMeshRenderer>().enabled = false;
             shotgunMesh.GetComponent<MeshRenderer>().enabled = true;
             pumpMesh.GetComponent<MeshRenderer>().enabled = true;
             gunDamage = 1;
