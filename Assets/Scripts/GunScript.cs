@@ -80,14 +80,14 @@ public class GunScript : MonoBehaviour
         {
             if(SelectedGun == Gun.Pistol)
             {
-                if (pistolMag == 0 && pistolReserve > 0)
+                if (pistolReserve > 0)
                 {
                     reloadAmmoBool = true;
                 }
             }
             else if (SelectedGun == Gun.Shotgun)
             {
-                if (shotgunLoad == 0 && shotgunReserve > 0)
+                if (shotgunReserve > 0)
                 {
                     reloadAmmoBool = true;
                 }
@@ -140,6 +140,11 @@ public class GunScript : MonoBehaviour
                     reloadCheck = false;
                     reloading = false;
                 }
+            }
+            if(pistolModel.GetComponent<PistolAnimationScript>().fire == true)
+            {
+                reloadCheck = false;
+                pistolModel.GetComponent<PistolAnimationScript>().reload = false;
             }
         }
         else if (SelectedGun == Gun.Shotgun)
@@ -226,14 +231,14 @@ public class GunScript : MonoBehaviour
 
     public void TriggerGun()
     {
-        if (SelectedGun == Gun.Pistol && !reloading)
+        if (SelectedGun == Gun.Pistol && !reloading && !reloadAmmoBool)
         {
             if (pistolModel.GetComponent<PistolAnimationScript>().fire == false)
             {
                 PistolShoot();
              }
         }
-        else if(SelectedGun == Gun.Shotgun && !reloading)
+        else if(SelectedGun == Gun.Shotgun && !reloading && !reloadAmmoBool)
         {
             if (shotgunModel.GetComponent<ShotgunAnimationScript>().pump == false)
             {
