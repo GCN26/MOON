@@ -42,7 +42,7 @@ public class GunScript : MonoBehaviour
     private float maxPistolMag = 12;
     private float maxPistolReserve = 36;
     private float maxShotgunLoad = 6;
-    private float maxShotgunReserve = 24;
+    private float maxShotgunReserve = 12;
     public float reloadTimer = 0;
 
     public void Start()
@@ -56,7 +56,7 @@ public class GunScript : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && !reloadAmmoBool && !reloading)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && !reloadAmmoBool && !reloading && !shootRotBool)
         {
             switchTo = true;
             SelectedGun = Gun.Pistol;
@@ -66,7 +66,7 @@ public class GunScript : MonoBehaviour
             reloadAmmoBool = false;
             reloadTimer = 0;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2) && !reloadAmmoBool && !reloading)
+        if (Input.GetKeyDown(KeyCode.Alpha2) && !reloadAmmoBool && !reloading && !shootRotBool)
         {
             switchTo = true;
             SelectedGun = Gun.Shotgun;
@@ -78,7 +78,20 @@ public class GunScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            reloadAmmoBool = true;
+            if(SelectedGun == Gun.Pistol)
+            {
+                if (pistolMag == 0 && pistolReserve > 0)
+                {
+                    reloadAmmoBool = true;
+                }
+            }
+            else if (SelectedGun == Gun.Shotgun)
+            {
+                if (shotgunLoad == 0 && shotgunReserve > 0)
+                {
+                    reloadAmmoBool = true;
+                }
+            }
         }
 
         if (SelectedGun == Gun.Pistol)
