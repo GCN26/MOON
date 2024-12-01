@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.Timeline;
 using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
@@ -35,13 +36,14 @@ public class GunScript : MonoBehaviour
     private Quaternion shotgunReloadRot = Quaternion.Euler(new Vector3(16f, -65.62f, -10f));
     private Quaternion shotgunShootRot = Quaternion.Euler(new Vector3(-8.139f, -4.286f, -0.416f));
 
-    public bool switchTo, reloading, pumpNoEject, shootRotBool, shootRotBool2;
+    public bool switchTo, reloading, pumpNoEject, shootRotBool, shootRotBool2,reloadCheck,reloadAmmoBool;
 
     public float pistolMag, pistolReserve, shotgunLoad, shotgunReserve;
     private float maxPistolMag = 12;
     private float maxPistolReserve = 36;
     private float maxShotgunLoad = 6;
     private float maxShotgunReserve = 24;
+    public float reloadTimer = 0;
 
     public void Start()
     {
@@ -54,21 +56,32 @@ public class GunScript : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && !reloadAmmoBool && !reloading)
         {
             switchTo = true;
             SelectedGun = Gun.Pistol;
             transform.localRotation = new Quaternion(35.728f, -5.076f, -2.969f, 1);
             pumpNoEject = false;
+            reloadCheck = false;
+            reloadAmmoBool = false;
+            reloadTimer = 0;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2) && !reloadAmmoBool && !reloading)
         {
             switchTo = true;
             SelectedGun = Gun.Shotgun;
             transform.localRotation = new Quaternion(35.728f, -5.076f, -2.969f, 1);
+            reloadCheck = false;
+            reloadAmmoBool = false;
+            reloadTimer = 0;
         }
 
-        if(SelectedGun == Gun.Pistol)
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            reloadAmmoBool = true;
+        }
+
+        if (SelectedGun == Gun.Pistol)
         {
             pistolMesh.GetComponent<SkinnedMeshRenderer>().enabled = true;
             slideMesh.GetComponent<SkinnedMeshRenderer>().enabled = true;
@@ -76,6 +89,45 @@ public class GunScript : MonoBehaviour
             shotgunMesh.GetComponent<MeshRenderer>().enabled = false;
             pumpMesh.GetComponent<MeshRenderer>().enabled = false;
             gunDamage = 2;
+
+            if (reloadAmmoBool && pistolReserve > 0)
+            {
+                for (int i = 0; i < maxPistolMag; i++)
+                {
+                    if (pistolMag == maxPistolMag)
+                    {
+                        reloadAmmoBool = false;
+                        break;
+                    }
+                    else
+                    {
+                        reloading = true;
+                        if (pistolReserve > 0)
+                        {
+                            pistolReserve -= 1;
+                            pistolMag += 1;
+                        }
+                        else
+                        {
+                            reloadAmmoBool = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (reloading)
+            {
+                if (reloadCheck == false)
+                {
+                    pistolModel.GetComponent<PistolAnimationScript>().reload = true;
+                    reloadCheck = true;
+                }
+                else if (pistolModel.GetComponent<PistolAnimationScript>().reload == false)
+                {
+                    reloadCheck = false;
+                    reloading = false;
+                }
+            }
         }
         else if (SelectedGun == Gun.Shotgun)
         {
@@ -91,7 +143,60 @@ public class GunScript : MonoBehaviour
             shotgunMesh.GetComponent<MeshRenderer>().enabled = true;
             pumpMesh.GetComponent<MeshRenderer>().enabled = true;
             gunDamage = 1;
-            
+
+            if (reloadAmmoBool && shotgunReserve > 0)
+            {
+                for (int i = 0; i < maxShotgunLoad; i++)
+                {
+                    if (shotgunLoad == maxShotgunLoad)
+                    {
+                        reloadAmmoBool = false;
+                        break;
+                    }
+                    else
+                    {
+                        reloading = true;
+                        if (shotgunReserve > 0)
+                        {
+                            shotgunReserve -= 1;
+                            shotgunLoad += 1;
+                        }
+                        else
+                        {
+                            reloadAmmoBool = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (reloading && !shootRotBool)
+            {
+                transform.localRotation = Quaternion.RotateTowards(transform.localRotation, shotgunReloadRot, gunSpinSpeed * 100 * Time.deltaTime);
+                pumpNoEject = true;
+                reloadTimer += Time.deltaTime;
+                if(reloadTimer > 1f)
+                {
+                    reloadTimer = 0;
+                    reloading = false;
+                }
+            }
+            else if (!reloading && shootRotBool)
+            {
+                if (SelectedGun == Gun.Shotgun)
+                {
+                    transform.localRotation = Quaternion.RotateTowards(transform.localRotation, shotgunShootRot, gunSpinSpeed * 250 * Time.deltaTime);
+                    if (shotgunModel.GetComponent<ShotgunAnimationScript>().pumpTimer > .15)
+                    {
+                        shootRotBool2 = true;
+                    }
+                    if (shootRotBool2)
+                    {
+                        transform.localRotation = Quaternion.RotateTowards(transform.localRotation, startingRot, .05f * Time.deltaTime);
+                        shootRotBool = false;
+                        shootRotBool2 = false;
+                    }
+                }
+            }
         }
         if (!reloading && !shootRotBool)
         {
@@ -103,36 +208,19 @@ public class GunScript : MonoBehaviour
                 shotgunModel.GetComponent<ShotgunAnimationScript>().eject = false;
             }
         }
-        else if (reloading && !shootRotBool)
-        {
-            transform.localRotation = Quaternion.RotateTowards(transform.localRotation, shotgunReloadRot, gunSpinSpeed * 100 * Time.deltaTime);
-            pumpNoEject = true;
-        }
-        else if (!reloading && shootRotBool)
-        {
-            if (SelectedGun == Gun.Shotgun) {
-                transform.localRotation = Quaternion.RotateTowards(transform.localRotation, shotgunShootRot, gunSpinSpeed * 250 * Time.deltaTime);
-                if (shotgunModel.GetComponent<ShotgunAnimationScript>().pumpTimer > .15)
-                {
-                    shootRotBool2 = true;
-                }
-                if (shootRotBool2)
-                {
-                    transform.localRotation = Quaternion.RotateTowards(transform.localRotation, startingRot, .05f*Time.deltaTime);
-                    shootRotBool = false;
-                    shootRotBool2 = false;
-                }
-            }
-        }
+            
     }
 
     public void TriggerGun()
     {
-        if (SelectedGun == Gun.Pistol && !reloading && pistolMag > 0)
+        if (SelectedGun == Gun.Pistol && !reloading)
         {
-            PistolShoot();
+            if (pistolModel.GetComponent<PistolAnimationScript>().fire == false)
+            {
+                PistolShoot();
+             }
         }
-        else if(SelectedGun == Gun.Shotgun && !reloading && shotgunLoad > 0)
+        else if(SelectedGun == Gun.Shotgun && !reloading)
         {
             if (shotgunModel.GetComponent<ShotgunAnimationScript>().pump == false)
             {
@@ -143,35 +231,50 @@ public class GunScript : MonoBehaviour
 
     public void PistolShoot()
     {
-        pistolMag -= 1;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, pistolRange))
+        if (pistolMag > 0)
         {
-            var mark = Instantiate(hitMarker);
-            mark.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-
-            calcHitEnemy(hit);
-        }
-    }
-    public void ShotgunShoot()
-    {
-        shotgunLoad -= 1;
-        shootRotBool = true;
-        for (int i = 0; i < 9; i++)
-        {
-            calcShotgunPellets(i);
-            shotgunModel.GetComponent<ShotgunAnimationScript>().pump = true;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition + shotgunOffset);
+            pistolMag -= 1;
+            pistolModel.GetComponent<PistolAnimationScript>().fire = true;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, shotgunRange))
+            if (Physics.Raycast(ray, out hit, pistolRange))
             {
                 var mark = Instantiate(hitMarker);
                 mark.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
 
                 calcHitEnemy(hit);
             }
-            
+        }
+        else if(pistolMag == 0 && pistolReserve > 0)
+        {
+            reloadAmmoBool = true;
+        }
+    }
+    public void ShotgunShoot()
+    {
+        if (shotgunLoad > 0)
+        {
+            shotgunLoad -= 1;
+            shootRotBool = true;
+            for (int i = 0; i < 9; i++)
+            {
+                calcShotgunPellets(i);
+                shotgunModel.GetComponent<ShotgunAnimationScript>().pump = true;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition + shotgunOffset);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, shotgunRange))
+                {
+                    var mark = Instantiate(hitMarker);
+                    mark.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
+
+                    calcHitEnemy(hit);
+                }
+
+            }
+        }
+        else if(shotgunLoad == 0 && shotgunReserve > 0)
+        {
+            reloadAmmoBool = true;
         }
         
     }
@@ -232,22 +335,6 @@ public class GunScript : MonoBehaviour
             hit.collider.GetComponent<EnemyMovement>().HP -= gunDamage;
         }
     }
-
-    public void reloadGun()
-    {
-        //alternatively, set a bool to make this done in update
-        if(SelectedGun == Gun.Pistol)
-        {
-            //-1 from reserve, making sure not to pass 0
-            //+1 to mag, making sure not to pass 12
-        }
-        else if (SelectedGun == Gun.Shotgun)
-        {
-            //-1 from reserve, making sure not to pass 0
-            //+1 to load, making sure not to pass 6
-        }
-    }
-
     public void ammoPickup()
     {
         //if small, 1/4 of all reserves

@@ -1122,6 +1122,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: shotgun
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2b14871a085309d4ba0f12e897ea6e93, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1858,7 +1862,7 @@ MonoBehaviour:
   shotgunModel: {fileID: 145561479}
   shotgunMesh: {fileID: 1325034471}
   pumpMesh: {fileID: 854715060}
-  pistolModel: {fileID: 0}
+  pistolModel: {fileID: 1581738783}
   pistolMesh: {fileID: 181010632}
   slideMesh: {fileID: 1336211078}
   magMesh: {fileID: 1253765036}
@@ -1868,10 +1872,13 @@ MonoBehaviour:
   pumpNoEject: 0
   shootRotBool: 0
   shootRotBool2: 0
+  reloadCheck: 0
+  reloadAmmoBool: 0
   pistolMag: 0
   pistolReserve: 0
   shotgunLoad: 0
   shotgunReserve: 0
+  reloadTimer: 0
 --- !u!1 &1207248926
 GameObject:
   m_ObjectHideFlags: 0
@@ -2346,10 +2353,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 1581738786}
-  empty: 1
+  empty: 0
   fire: 0
   reload: 0
+  eject: 0
   timer: 0
+  gunParent: {fileID: 1112550666}
+  shell: {fileID: 1782186314471356721, guid: cbe0bfd10e7177f48bf7ce0ac0514469, type: 3}
 --- !u!95 &1581738786
 Animator:
   serializedVersion: 5
