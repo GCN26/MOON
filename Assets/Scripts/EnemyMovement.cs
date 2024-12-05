@@ -22,8 +22,7 @@ public class EnemyMovement : MonoBehaviour
     public float playerDist;
 
     [Header("Combat")]
-    public float combatCooldown;
-    //private float combatCooldownCounter = 0;
+    public float damage;
     [Header("Idling Time")]
     public float idleWaitTime;
     private float idleWaitTimeCounter = 0;
@@ -39,7 +38,7 @@ public class EnemyMovement : MonoBehaviour
     public float deadTimerTarget = 2.5f;
     
 
-    public enum EnemyStates { Idle, Patrol, Chase, Attack, Dead };
+    public enum EnemyStates { Idle, Patrol, Chase, Dead };
     public EnemyStates _currentState;
     public EnemyStates currentState
     {
@@ -57,10 +56,6 @@ public class EnemyMovement : MonoBehaviour
             else if (value == EnemyStates.Chase)
             {
             }
-            else if (value == EnemyStates.Attack)
-            {
-                //combatCooldownCounter = 0;
-            }
             _currentState = value;
         }
     }
@@ -72,26 +67,27 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
-        Debug.DrawRay(eyes.transform.position, transform.TransformDirection(Vector3.forward) * visionRange, Color.blue);
-
-        switch (currentState)
+        if (Time.timeScale > 0)
         {
-            case EnemyStates.Idle:
-                Idle(); break;
-            case EnemyStates.Patrol:
-                Patrol(); break;
-            case EnemyStates.Chase:
-                Chase(); break;
-            case EnemyStates.Attack:
-                Attack(); break;
-            case EnemyStates.Dead:
-                Dead(); break;
-            default:
-                Debug.Log("State not recognized"); break;
-        }
+            Debug.DrawRay(eyes.transform.position, transform.TransformDirection(Vector3.forward) * visionRange, Color.blue);
 
-        if (HP <= 0) currentState = EnemyStates.Dead;
-        playerDist = Vector3.Distance(this.transform.position, target.position);
+            switch (currentState)
+            {
+                case EnemyStates.Idle:
+                    Idle(); break;
+                case EnemyStates.Patrol:
+                    Patrol(); break;
+                case EnemyStates.Chase:
+                    Chase(); break;
+                case EnemyStates.Dead:
+                    Dead(); break;
+                default:
+                    Debug.Log("State not recognized"); break;
+            }
+
+            if (HP <= 0) currentState = EnemyStates.Dead;
+            playerDist = Vector3.Distance(this.transform.position, target.position);
+        }
     }
 
     private bool IsTargetVisible()
@@ -158,10 +154,6 @@ public class EnemyMovement : MonoBehaviour
             currentState = EnemyStates.Idle;
             return;
         }
-    }
-    private void Attack()
-    {
-
     }
     private void Dead()
     {

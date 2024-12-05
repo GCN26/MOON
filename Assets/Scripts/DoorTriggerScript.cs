@@ -14,9 +14,15 @@ public class DoorTriggerScript : MonoBehaviour
     }
     public doorColor colorOf;
 
+    [Header("True is up, False is down")]
+    public bool Direction;
+    private float directionMultiplier;
+
     public void Start()
     {
         startYPos = this.transform.position.y;
+        if (Direction) directionMultiplier = 1;
+        else directionMultiplier = -1;
     }
     public void OnTriggerEnter(Collider other)
     {
@@ -43,8 +49,12 @@ public class DoorTriggerScript : MonoBehaviour
 
     public void Update()
     {
-        if (playerTouchedTrigger) {
-            Door.transform.position = Vector3.Lerp(Door.transform.position,new Vector3(Door.transform.position.x, startYPos + 3, Door.transform.position.z),Time.deltaTime);
+        if (Time.timeScale > 0)
+        {
+            if (playerTouchedTrigger)
+            {
+                Door.transform.position = Vector3.Lerp(Door.transform.position, new Vector3(Door.transform.position.x, startYPos + (3*directionMultiplier), Door.transform.position.z), Time.deltaTime);
+            }
         }
     }
 }

@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.PlasticSCM.Editor.WebApi;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -27,19 +31,76 @@ public class PlayerScript : MonoBehaviour
     public bool blueKey;
     public bool yellowKey;
 
-    // Start is called before the first frame update
+    [Header("UI")]
+    public TextMeshProUGUI HPText;
+    public Image redKeyUI,blueKeyUI,yellowKeyUI;
+    public GameObject FadeToBlack;
+
+    [Header("HP")]
+    public float HP;
+    private float maxHP = 100;
+    public float invulnTimer = 2;
+    public float invulnTimerMax = 2;
+    public bool dead;
+    public float deadTimer;
+    public Vector3 deadPos;
+
     void Start()
     {
-        
+        redKeyUI.enabled = false;
+        blueKeyUI.enabled = false;
+        yellowKeyUI.enabled = false;
     }
 
     void Update()
     {
-        PlayerMovement();
-        Debug.DrawRay(mainCam.transform.position, transform.TransformDirection(Vector3.forward) * 25, Color.blue);
-        if (Input.GetButtonDown("Fire1"))
+        if (Time.timeScale > 0)
         {
-            gunObject.GetComponent<GunScript>().TriggerGun();
+            if (invulnTimer > 0)
+            {
+                invulnTimer -= Time.deltaTime;
+            }
+            else if (invulnTimer < 0)
+            {
+                invulnTimer = 0;
+            }
+            //Stuff that needs to be done but unsorted
+            HPText.text = string.Format("HP: {0}", HP);
+            redKeyUI.enabled = redKey;
+            blueKeyUI.enabled = blueKey;
+            yellowKeyUI.enabled = yellowKey;
+
+            if (HP > maxHP) HP = maxHP;
+            if (HP > 0)
+            {
+                PlayerMovement();
+                Debug.DrawRay(mainCam.transform.position, transform.TransformDirection(Vector3.forward) * 25, Color.blue);
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    gunObject.GetComponent<GunScript>().TriggerGun();
+                }
+            }
+            else
+            {
+                if(deadTimer == 0)
+                {
+                    deadPos = this.transform.position;
+                }
+                
+                if(deadTimer > 1.334)
+                {
+                    dead = true;
+                }
+                else deadTimer += Time.deltaTime;
+                this.tag = "Dead";
+                HP = 0;
+                FadeToBlack.GetComponent<Image>().color = new Color(0, 0, 0, deadTimer);
+                this.transform.position = Vector3.Lerp(deadPos, new Vector3(deadPos.x,deadPos.y-.8f,deadPos.z), deadTimer * .75f);
+                if (dead)
+                {
+                 
+                }
+            }
         }
     }
 
