@@ -99,6 +99,15 @@ public class GunScript : MonoBehaviour
                 reloadTimer = 0;
             }
 
+            if(pistolReserve > maxPistolReserve)
+            {
+                pistolReserve = maxPistolReserve;
+            }
+            if(shotgunReserve > maxShotgunReserve)
+            {
+                shotgunReserve = maxShotgunReserve;
+            }
+
             if (Input.GetKeyDown(KeyCode.R))
             {
                 if (SelectedGun == Gun.Pistol)

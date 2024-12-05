@@ -159,6 +159,7 @@ MonoBehaviour:
   targetSpotted: 0
   playerDist: 0
   damage: 45
+  damageZone: {fileID: 8633740858461971274}
   idleWaitTime: 3
   patrolRange: 5
   minPatrolDestinationDistance: 0

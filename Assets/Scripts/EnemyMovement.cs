@@ -23,6 +23,7 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("Combat")]
     public float damage;
+    public GameObject damageZone;
     [Header("Idling Time")]
     public float idleWaitTime;
     private float idleWaitTimeCounter = 0;
@@ -160,6 +161,11 @@ public class EnemyMovement : MonoBehaviour
         deadTimer += Time.deltaTime;
         gameObject.GetComponent<Collider>().enabled = false;
         agent.destination = transform.position;
+
+        if (damageZone != null)
+        {
+            Destroy(damageZone);
+        }
 
         if (deadTimer > deadTimerTarget)
         {

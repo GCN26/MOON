@@ -33,8 +33,10 @@ public class PlayerScript : MonoBehaviour
 
     [Header("UI")]
     public TextMeshProUGUI HPText;
+    public TextMeshProUGUI EnemiesRemaining;
     public Image redKeyUI,blueKeyUI,yellowKeyUI;
-    public GameObject FadeToBlack;
+    public GameObject FadeToBlack,OwIGotHurtRedUIThatFlashes;
+    int numberOfEnemies;
 
     [Header("HP")]
     public float HP;
@@ -54,8 +56,15 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        
+        if (dead)
+        {
+            cursorFree = true;
+            if (cursorFree) Cursor.lockState = CursorLockMode.None;
+        }
         if (Time.timeScale > 0)
         {
+            
             if (invulnTimer > 0)
             {
                 invulnTimer -= Time.deltaTime;
@@ -69,6 +78,11 @@ public class PlayerScript : MonoBehaviour
             redKeyUI.enabled = redKey;
             blueKeyUI.enabled = blueKey;
             yellowKeyUI.enabled = yellowKey;
+            OwIGotHurtRedUIThatFlashes.GetComponent<Image>().color = new Color(1, 0, 0, (invulnTimer / 4) - .25f);
+
+            //Track remaining enemies
+            numberOfEnemies = GameObject.FindObjectsOfType(typeof(EnemyMovement)).Length;
+            EnemiesRemaining.text = "Enemies Remaining: " + numberOfEnemies;
 
             if (HP > maxHP) HP = maxHP;
             if (HP > 0)
@@ -129,7 +143,8 @@ public class PlayerScript : MonoBehaviour
             this.rotation = new Vector3(0, inputs.x * 180 * Time.deltaTime, 0);
             move = new Vector3(0, move.y, inputs.z * speed);
         }
-        if (!cursorFree) Cursor.lockState = CursorLockMode.Locked;
+        if (cursorFree) Cursor.lockState = CursorLockMode.None;
+        else if (!cursorFree) Cursor.lockState = CursorLockMode.Locked;
 
         //Move
         if (control.isGrounded && Input.GetButton("Jump"))
