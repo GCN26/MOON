@@ -14,6 +14,7 @@ public class PistolAnimationScript : MonoBehaviour
     //add shell like shotgun
     public void Update()
     {
+
         if (!reload && !fire)
         {
             //if (empty)

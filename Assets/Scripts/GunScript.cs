@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Timeline;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
@@ -33,7 +34,8 @@ public class GunScript : MonoBehaviour
     public GameObject shotgunMesh, pumpMesh;
     public GameObject pistolModel, pistolMesh, slideMesh, magMesh;
     public GameObject knifeRotate, knifeModel;
-    
+    public GameObject pistolRayPoint, shotgunRayPoint;
+    public LineRenderer lineR;
 
     [Header("Rotations")]
     private Quaternion startingRot;
@@ -57,6 +59,14 @@ public class GunScript : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI AmmoClip;
     public TextMeshProUGUI AmmoReserve;
+    public GameObject pistolRet, shotgunRet;
+
+    [Header("Sounds")]
+    public AudioSource ShotSource;
+    public AudioSource ReloadSource,PumpSource;
+    public AudioClip shotgunShot,pistolShot,knifeSwingSFX;
+    public AudioClip shotgunReload, pistolReload,pumpSFX;
+
     public void Start()
     {
         startingRot = transform.localRotation;
@@ -70,6 +80,14 @@ public class GunScript : MonoBehaviour
     {
         if (Time.timeScale > 0)
         {
+            ShotSource.UnPause();
+            ReloadSource.UnPause();
+            PumpSource.UnPause();
+
+            ShotSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume*.75f;
+            ReloadSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume * .75f;
+            PumpSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume * .75f;
+
             if (Input.GetKeyDown(KeyCode.Alpha1) && !reloadAmmoBool && !reloading && !shootRotBool)
             {
                 switchTo = true;
@@ -79,6 +97,8 @@ public class GunScript : MonoBehaviour
                 reloadCheck = false;
                 reloadAmmoBool = false;
                 reloadTimer = 0;
+                pistolRet.SetActive(true);
+                shotgunRet.SetActive(false);
             }
             if (Input.GetKeyDown(KeyCode.Alpha2) && !reloadAmmoBool && !reloading && !shootRotBool)
             {
@@ -88,6 +108,8 @@ public class GunScript : MonoBehaviour
                 reloadCheck = false;
                 reloadAmmoBool = false;
                 reloadTimer = 0;
+                pistolRet.SetActive(false);
+                shotgunRet.SetActive(true);
             }
             if (Input.GetKeyDown(KeyCode.Alpha3) && !reloadAmmoBool && !reloading && !shootRotBool)
             {
@@ -97,6 +119,8 @@ public class GunScript : MonoBehaviour
                 reloadCheck = false;
                 reloadAmmoBool = false;
                 reloadTimer = 0;
+                pistolRet.SetActive(true);
+                shotgunRet.SetActive(false);
             }
 
             if(pistolReserve > maxPistolReserve)
@@ -129,6 +153,14 @@ public class GunScript : MonoBehaviour
 
             if (SelectedGun == Gun.Pistol)
             {
+                pistolRet.SetActive(true);
+                shotgunRet.SetActive(false);
+                if (switchTo)
+                {
+                    ReloadSource.Stop();
+                    PumpSource.Stop();
+                    switchTo = false;
+                }
                 AmmoClip.text = string.Format("{0}", pistolMag);
                 AmmoReserve.text = string.Format("{0}", pistolReserve);
                 pistolMesh.GetComponent<SkinnedMeshRenderer>().enabled = true;
@@ -137,12 +169,15 @@ public class GunScript : MonoBehaviour
                 shotgunMesh.GetComponent<MeshRenderer>().enabled = false;
                 pumpMesh.GetComponent<MeshRenderer>().enabled = false;
                 knifeModel.GetComponent<MeshRenderer>().enabled = false;
+                ShotSource.clip = pistolShot;
+                ReloadSource.clip = pistolReload;
                 gunDamage = 2;
 
                 if (reloadAmmoBool && pistolReserve > 0)
                 {
                     for (int i = 0; i < maxPistolMag; i++)
                     {
+                        
                         if (pistolMag == maxPistolMag)
                         {
                             reloadAmmoBool = false;
@@ -150,6 +185,7 @@ public class GunScript : MonoBehaviour
                         }
                         else
                         {
+                            ReloadSource.Play();
                             reloading = true;
                             if (pistolReserve > 0)
                             {
@@ -180,17 +216,21 @@ public class GunScript : MonoBehaviour
                 if (pistolModel.GetComponent<PistolAnimationScript>().fire == true)
                 {
                     reloadCheck = false;
+                    //ReloadSource.Stop();
                     pistolModel.GetComponent<PistolAnimationScript>().reload = false;
                 }
             }
             else if (SelectedGun == Gun.Shotgun)
             {
+                pistolRet.SetActive(false);
+                shotgunRet.SetActive(true);
                 AmmoClip.text = string.Format("{0}", shotgunLoad);
                 AmmoReserve.text = string.Format("{0}", shotgunReserve);
                 if (switchTo)
                 {
                     shotgunModel.GetComponent<ShotgunAnimationScript>().pump = true;
                     shotgunModel.GetComponent<ShotgunAnimationScript>().eject = false;
+                    ReloadSource.Stop();
                     switchTo = false;
                 }
                 pistolMesh.GetComponent<SkinnedMeshRenderer>().enabled = false;
@@ -199,6 +239,9 @@ public class GunScript : MonoBehaviour
                 shotgunMesh.GetComponent<MeshRenderer>().enabled = true;
                 pumpMesh.GetComponent<MeshRenderer>().enabled = true;
                 knifeModel.GetComponent<MeshRenderer>().enabled = false;
+                ShotSource.clip = shotgunShot;
+                ReloadSource.clip = shotgunReload;
+                PumpSource.clip = pumpSFX;
                 gunDamage = 1;
 
                 if (reloadAmmoBool && shotgunReserve > 0)
@@ -229,6 +272,7 @@ public class GunScript : MonoBehaviour
                 }
                 if (reloading && !shootRotBool)
                 {
+                    ReloadSource.Play();
                     transform.localRotation = Quaternion.RotateTowards(transform.localRotation, shotgunReloadRot, gunSpinSpeed * 100 * Time.deltaTime);
                     pumpNoEject = true;
                     reloadTimer += Time.deltaTime;
@@ -258,6 +302,14 @@ public class GunScript : MonoBehaviour
             }
             else if(SelectedGun == Gun.Knife)
             {
+                pistolRet.SetActive(true);
+                shotgunRet.SetActive(false);
+                if (switchTo)
+                {
+                    ReloadSource.Stop();
+                    PumpSource.Stop();
+                    switchTo = false;
+                }
                 AmmoClip.text = string.Format("");
                 AmmoReserve.text = string.Format("");
                 pistolMesh.GetComponent<SkinnedMeshRenderer>().enabled = false;
@@ -267,6 +319,8 @@ public class GunScript : MonoBehaviour
                 pumpMesh.GetComponent<MeshRenderer>().enabled = false;
                 knifeModel.GetComponent<MeshRenderer>().enabled = true;
                 gunDamage = 10;
+                ShotSource.clip = knifeSwingSFX;
+                ReloadSource.clip = null;
             }
             if (!reloading && !shootRotBool)
             {
@@ -278,6 +332,12 @@ public class GunScript : MonoBehaviour
                     shotgunModel.GetComponent<ShotgunAnimationScript>().eject = false;
                 }
             }
+        }
+        else
+        {
+            ShotSource.Pause();
+            ReloadSource.Pause();
+            PumpSource.Pause();
         }
             
     }
@@ -308,6 +368,7 @@ public class GunScript : MonoBehaviour
     {
         if (pistolMag > 0)
         {
+            ShotSource.Play();
             pistolMag -= 1;
             pistolModel.GetComponent<PistolAnimationScript>().fire = true;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -319,6 +380,10 @@ public class GunScript : MonoBehaviour
 
                 calcHitEnemy(hit);
             }
+            LineRenderer lineE = Instantiate(lineR);
+            lineE.positionCount = 2;
+            lineE.SetPosition(0, pistolRayPoint.transform.position);
+            lineE.SetPosition(1, ray.GetPoint(pistolRange));
         }
         else if(pistolMag == 0 && pistolReserve > 0)
         {
@@ -329,6 +394,8 @@ public class GunScript : MonoBehaviour
     {
         if (shotgunLoad > 0)
         {
+            
+            ShotSource.Play();
             shotgunLoad -= 1;
             shootRotBool = true;
             for (int i = 0; i < 9; i++)
@@ -339,11 +406,16 @@ public class GunScript : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, shotgunRange))
                 {
+                    
                     var mark = Instantiate(hitMarker);
                     mark.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
 
                     calcHitEnemy(hit);
                 }
+                LineRenderer lineE = Instantiate(lineR);
+                lineE.positionCount = 2;
+                lineE.SetPosition(0, shotgunRayPoint.transform.position);
+                lineE.SetPosition(1, ray.GetPoint(shotgunRange));
 
             }
         }
@@ -357,6 +429,7 @@ public class GunScript : MonoBehaviour
     {
         if (knifeModel.GetComponent<KnifeAnimationScript>().fire == false)
         {
+            ShotSource.Play();
             knifeModel.GetComponent<KnifeAnimationScript>().fire = true;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;

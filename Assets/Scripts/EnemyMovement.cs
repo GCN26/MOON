@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions.Must;
+using UnityEngine.UI;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -13,13 +14,16 @@ public class EnemyMovement : MonoBehaviour
     public float minPlayerDist;
     public float maxPlayerDist;
 
+    public Slider healthBar;
+    public GameObject hbGameObject;
+
     [Header("Detection")]
     public float visionRange;
     public LayerMask visionBlockers;
     public Transform eyes;
     public string playerTag;
     public bool targetSpotted;
-    public float playerDist;
+    public float playerDist,playerEnrageDist;
 
     [Header("Combat")]
     public float damage;
@@ -35,6 +39,7 @@ public class EnemyMovement : MonoBehaviour
 
     public float maxPatrolLen,distFromStart;
     public float HP;
+    private float maxHP;
     public float deadTimer;
     public float deadTimerTarget = 2.5f;
     
@@ -64,13 +69,28 @@ public class EnemyMovement : MonoBehaviour
     void Start()
     {
         startPos = transform.position;
+        maxHP = HP;
     }
 
     void Update()
     {
         if (Time.timeScale > 0)
         {
-            Debug.DrawRay(eyes.transform.position, transform.TransformDirection(Vector3.forward) * visionRange, Color.blue);
+            if (healthBar != null)
+            {
+                healthBar.value = HP / maxHP;
+            }
+            if(_currentState == EnemyStates.Chase || _currentState == EnemyStates.Dead)
+            {
+                if(HP/maxHP < 1) 
+                {
+                    hbGameObject.SetActive(true);
+                }
+            }
+            else
+            {
+                hbGameObject.SetActive(false);
+            }
 
             switch (currentState)
             {
@@ -111,7 +131,7 @@ public class EnemyMovement : MonoBehaviour
     {
         
         idleWaitTimeCounter += Time.deltaTime;
-        if (IsTargetVisible())
+        if (IsTargetVisible()||playerDist <= playerEnrageDist)
         {
             currentState = EnemyStates.Chase;
             return;
@@ -134,7 +154,7 @@ public class EnemyMovement : MonoBehaviour
             agent.destination = patrolDestination;
         }
 
-        if (IsTargetVisible())
+        if (IsTargetVisible() || playerDist <= playerEnrageDist)
         {
             currentState = EnemyStates.Chase;
             return;

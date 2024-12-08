@@ -12,16 +12,51 @@ public class Shell : MonoBehaviour
     public float DespawnTimer;
     public float DespawnTarget;
 
+    public AudioSource source;
+    public AudioClip drop;
+    public AudioClip brass1, brass2, brass3;
+    public bool isBrass;
+    
+
     void Start()
     {
-        
+        if (isBrass)
+        {
+            int soundNo = Random.Range(1, 4);
+            if (soundNo == 1)
+            {
+                source.clip = brass1;
+            }
+            else if (soundNo == 2)
+            {
+                source.clip = brass2;
+            }
+            else
+            {
+                source.clip = brass3;
+            }
+        }
+        else
+        {
+            source.clip = drop;
+        }
+        source.Play();
     }
     public void Update()
     {
-        DespawnTimer += Time.deltaTime;
-        if(DespawnTimer >= DespawnTarget)
+        if (Time.timeScale == 0)
         {
-            Destroy(gameObject);
+            source.Pause();
+        }
+        else
+        {
+            source.UnPause();
+            source.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
+            DespawnTimer += Time.deltaTime;
+            if (DespawnTimer >= DespawnTarget)
+            {
+                Destroy(gameObject);
+            }
         }
     }
     void FixedUpdate()

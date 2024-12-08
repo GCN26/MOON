@@ -37,6 +37,9 @@ public class PlayerScript : MonoBehaviour
     public Image redKeyUI,blueKeyUI,yellowKeyUI;
     public GameObject FadeToBlack,OwIGotHurtRedUIThatFlashes;
     int numberOfEnemies;
+    public GameObject PauseUI;
+    public Toggle retro;
+    public GameObject OptionsPanel;
 
     [Header("HP")]
     public float HP;
@@ -47,24 +50,72 @@ public class PlayerScript : MonoBehaviour
     public float deadTimer;
     public Vector3 deadPos;
 
+    [Header("Audio")]
+    public AudioSource HurtSource;
+    public AudioSource AmmoSource, HealSource, KeySource;
+    public AudioClip PlayerHurt, AmmoPickup, HealthPickup,KeyPickup;
+
     void Start()
     {
         redKeyUI.enabled = false;
         blueKeyUI.enabled = false;
         yellowKeyUI.enabled = false;
+
+        HurtSource.clip = PlayerHurt;
+        AmmoSource.clip = AmmoPickup;
+        HealSource.clip = HealthPickup;
+        KeySource.clip = KeyPickup;
     }
 
     void Update()
     {
-        
+        HurtSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
+        AmmoSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
+        HealSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
+        KeySource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
+
         if (dead)
         {
             cursorFree = true;
             if (cursorFree) Cursor.lockState = CursorLockMode.None;
         }
+        if(HP > 0)
+        {
+            if (Input.GetButtonDown("Pause"))
+            {
+                //Unpause
+                if (Time.timeScale == 0)
+                {
+                    OptionsPanel.SetActive(false);
+                    Time.timeScale = 1;
+                    PauseUI.SetActive(false);
+                    cursorFree = false;
+                    if (cursorFree) Cursor.lockState = CursorLockMode.Locked;
+                }
+                //Pause
+                else if (Time.timeScale == 1)
+                {
+                    Time.timeScale = 0;
+                    PauseUI.SetActive(true);
+                    cursorFree = true;
+                    if (cursorFree) Cursor.lockState = CursorLockMode.None;
+                }
+            }
+            if (Time.timeScale == 1)
+            {
+                //disable buttons
+                PauseUI.SetActive(false);
+                cursorFree = false;
+                if (cursorFree) Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
         if (Time.timeScale > 0)
         {
-            
+            HurtSource.UnPause();
+            AmmoSource.UnPause();
+            HealSource.UnPause();
+            KeySource.UnPause();
+
             if (invulnTimer > 0)
             {
                 invulnTimer -= Time.deltaTime;
@@ -116,6 +167,13 @@ public class PlayerScript : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            HurtSource.Pause();
+            AmmoSource.Pause();
+            HealSource.Pause();
+            KeySource.Pause();
+        }
     }
 
     public void PlayerMovement()
@@ -124,6 +182,8 @@ public class PlayerScript : MonoBehaviour
         inputs.x = Input.GetAxis("Horizontal") + Input.GetAxis("HorizontalD") * .75f;
         inputs.z = Input.GetAxis("Vertical") + Input.GetAxis("VerticalD") * .75f;
         inputs = Vector3.ClampMagnitude(inputs, 1f);
+
+        retroMovement = retro.isOn;
 
         //Camera controls
         rotX = Input.GetAxis("Mouse X") * mouseSensitivity + Input.GetAxis("ControllerRightStickX") * joyCamSensitivity;
@@ -166,5 +226,9 @@ public class PlayerScript : MonoBehaviour
         if (keyColor == 0) redKey = true;
         if (keyColor == 1) blueKey = true;
         if (keyColor == 2) yellowKey = true;
+    }
+    public void setRetroControls()
+    {
+        retroMovement = !retroMovement;
     }
 }

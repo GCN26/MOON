@@ -11,6 +11,7 @@ public class GameOverUI : MonoBehaviour
     public GameObject player, GOUI;
     public TextMeshProUGUI GOText,restartbtext,menubtext,quitbtext;
     public Button restartb, menub, quitb;
+    public GameObject optionsPanel;
 
     public float timer;
     string currentSceneName;
@@ -46,14 +47,36 @@ public class GameOverUI : MonoBehaviour
     }
     public void RestartLevel()
     {
+        optionsPanel.SetActive(false);
+        Time.timeScale = 1;
         SceneManager.LoadScene(currentSceneName);
     }
     public void MainMenu()
     {
-        //send to main menu
+        optionsPanel.SetActive(false);
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.None;
+        SceneManager.LoadScene("MainMenu");
+        Cursor.lockState = CursorLockMode.None;
     }
     public void QuitGame()
     {
+        optionsPanel.SetActive(false);
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.None;
         Application.Quit();
+    }
+    public void ResumeBut()
+    {
+        optionsPanel.SetActive(false);
+        Time.timeScale = 1;
+    }
+    public void OptionsBut()
+    {
+        if (optionsPanel.activeSelf == false)
+        {
+            optionsPanel.SetActive(true);
+        }
+        else optionsPanel.SetActive(false);
     }
 }

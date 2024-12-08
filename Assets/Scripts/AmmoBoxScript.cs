@@ -34,6 +34,6 @@ public class AmmoBoxScript : ItemPickupScript
     public override void CollectScript(Collider other)
     {
         other.GetComponent<PlayerScript>().gunObject.GetComponent<GunScript>().ammoPickup(multiplier);
-        
+        other.GetComponent<PlayerScript>().AmmoSource.Play();
     }
 }

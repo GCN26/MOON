@@ -34,6 +34,6 @@ public class HealthKitScript : ItemPickupScript
     {
         //add an overlay or smth to make this more interesting
         other.GetComponent<PlayerScript>().HP += health;
-
+        other.GetComponent<PlayerScript>().HealSource.Play();
     }
 }

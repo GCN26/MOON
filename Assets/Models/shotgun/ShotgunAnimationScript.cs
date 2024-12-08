@@ -7,6 +7,8 @@ public class ShotgunAnimationScript : MonoBehaviour
     public Animator animator;
     public bool pump,eject;
 
+    public GameObject parentGun;
+
     public float pumpTimer;
     public GameObject shell;
 
@@ -29,6 +31,7 @@ public class ShotgunAnimationScript : MonoBehaviour
             if (pumpTimer > .75)
             {
                 animator.SetBool("Pump", false);
+                parentGun.GetComponent<GunScript>().PumpSource.Play();
                 pump = false;
                 pumpTimer = 0;
                 eject = true;

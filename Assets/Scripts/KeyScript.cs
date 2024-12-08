@@ -22,5 +22,6 @@ public class KeyScript : ItemPickupScript
     public override void CollectScript(Collider other)
     {
         other.GetComponent<PlayerScript>().keyCollect((int)keyColor);
+        other.GetComponent<PlayerScript>().KeySource.Play();
     }
 }
