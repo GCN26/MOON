@@ -80,7 +80,7 @@ public class EnemyMovement : MonoBehaviour
             {
                 healthBar.value = HP / maxHP;
             }
-            if(_currentState == EnemyStates.Chase || _currentState == EnemyStates.Dead)
+            if(_currentState == EnemyStates.Chase || HP/maxHP < 1)
             {
                 if(HP/maxHP < 1) 
                 {

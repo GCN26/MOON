@@ -88,39 +88,48 @@ public class GunScript : MonoBehaviour
             ReloadSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume * .75f;
             PumpSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume * .75f;
 
+            if (Input.GetButtonDown("BumperR"))
+            {
+                if (SelectedGun == Gun.Pistol)
+                {
+                    SwitchShotgun();
+                }
+                else if (SelectedGun == Gun.Shotgun)
+                {
+                    SwitchKnife();
+                }
+                else if (SelectedGun == Gun.Knife)
+                {
+                    SwitchPistol();
+                }
+            }
+            if (Input.GetButtonDown("BumperL"))
+            {
+                if (SelectedGun == Gun.Pistol)
+                {
+                    SwitchKnife();
+                }
+                else if (SelectedGun == Gun.Shotgun)
+                {
+                    SwitchPistol();
+                }
+                else if (SelectedGun == Gun.Knife)
+                {
+                    SwitchShotgun();
+                }
+            }
+
             if (Input.GetKeyDown(KeyCode.Alpha1) && !reloadAmmoBool && !reloading && !shootRotBool)
             {
-                switchTo = true;
-                SelectedGun = Gun.Pistol;
-                transform.localRotation = new Quaternion(35.728f, -5.076f, -2.969f, 1);
-                pumpNoEject = false;
-                reloadCheck = false;
-                reloadAmmoBool = false;
-                reloadTimer = 0;
-                pistolRet.SetActive(true);
-                shotgunRet.SetActive(false);
+                SwitchPistol();
             }
             if (Input.GetKeyDown(KeyCode.Alpha2) && !reloadAmmoBool && !reloading && !shootRotBool)
             {
-                switchTo = true;
-                SelectedGun = Gun.Shotgun;
-                transform.localRotation = new Quaternion(35.728f, -5.076f, -2.969f, 1);
-                reloadCheck = false;
-                reloadAmmoBool = false;
-                reloadTimer = 0;
-                pistolRet.SetActive(false);
-                shotgunRet.SetActive(true);
+                SwitchShotgun();
             }
             if (Input.GetKeyDown(KeyCode.Alpha3) && !reloadAmmoBool && !reloading && !shootRotBool)
             {
-                switchTo = true;
-                SelectedGun = Gun.Knife;
-                transform.localRotation = new Quaternion(35.728f, -5.076f, -2.969f, 1);
-                reloadCheck = false;
-                reloadAmmoBool = false;
-                reloadTimer = 0;
-                pistolRet.SetActive(true);
-                shotgunRet.SetActive(false);
+                SwitchKnife();
             }
 
             if(pistolReserve > maxPistolReserve)
@@ -132,7 +141,7 @@ public class GunScript : MonoBehaviour
                 shotgunReserve = maxShotgunReserve;
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetButtonDown("Reload"))
             {
                 if (SelectedGun == Gun.Pistol)
                 {
@@ -503,5 +512,40 @@ public class GunScript : MonoBehaviour
     {
         pistolReserve += Mathf.Floor(maxPistolReserve * multiplier);
         shotgunReserve += Mathf.Floor(maxShotgunReserve * multiplier);
+    }
+    
+    public void SwitchPistol()
+    {
+        switchTo = true;
+        SelectedGun = Gun.Pistol;
+        transform.localRotation = new Quaternion(35.728f, -5.076f, -2.969f, 1);
+        pumpNoEject = false;
+        reloadCheck = false;
+        reloadAmmoBool = false;
+        reloadTimer = 0;
+        pistolRet.SetActive(true);
+        shotgunRet.SetActive(false);
+    }
+    public void SwitchShotgun()
+    {
+        switchTo = true;
+        SelectedGun = Gun.Shotgun;
+        transform.localRotation = new Quaternion(35.728f, -5.076f, -2.969f, 1);
+        reloadCheck = false;
+        reloadAmmoBool = false;
+        reloadTimer = 0;
+        pistolRet.SetActive(false);
+        shotgunRet.SetActive(true);
+    }
+    public void SwitchKnife()
+    {
+        switchTo = true;
+        SelectedGun = Gun.Knife;
+        transform.localRotation = new Quaternion(35.728f, -5.076f, -2.969f, 1);
+        reloadCheck = false;
+        reloadAmmoBool = false;
+        reloadTimer = 0;
+        pistolRet.SetActive(true);
+        shotgunRet.SetActive(false);
     }
 }

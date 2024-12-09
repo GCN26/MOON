@@ -41,6 +41,10 @@ public class PlayerScript : MonoBehaviour
     public Toggle retro;
     public GameObject OptionsPanel;
 
+    [Header("Victory")]
+    public float victoryTimer;
+    public bool victoryBool;
+
     [Header("HP")]
     public float HP;
     private float maxHP = 100;

@@ -10,17 +10,21 @@ public class MainMenuScript : MonoBehaviour
     public GameObject OptionsPanel,CreditsPanel;
     public Toggle retro;
     public TextMeshProUGUI Controls;
+    [TextArea(15, 20)]
+    public string controlsTextRetro;
+    [TextArea(15, 20)]
+    public string controlsTextDefault;
 
     public void Update()
     {
         Cursor.lockState = CursorLockMode.None;
         if (retro.isOn)
         {
-            Controls.text = "Controls:\r\n\r\nM1/B - Fire\r\nWS/DPad UD/Left Stick UD - Move \r\nAD/DPad LR/Left Stick LR - Camera\r\n1,2,3/Bumpers - Swap Weapon\r\nEscape/Start - Pause";
+            Controls.text = controlsTextRetro;
         }
         else
         {
-            Controls.text = "Controls:\r\n\r\nM1/B - Fire\r\nWASD/DPad/Left Stick - Move \r\nMouse/Right Stick - Camera\r\n1,2,3/Bumpers - Swap Weapon\r\nEscape/Start - Pause";
+            Controls.text = controlsTextDefault;
         }
     }
     public void LevelSelect()

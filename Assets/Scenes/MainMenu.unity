@@ -1112,7 +1112,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -148, y: 15}
+  m_AnchoredPosition: {x: -148, y: -27}
   m_SizeDelta: {x: 338.5154, y: 57.3636}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &355232942
@@ -1759,6 +1759,42 @@ MonoBehaviour:
   CreditsPanel: {fileID: 745881752}
   retro: {fileID: 355232942}
   Controls: {fileID: 728369511}
+  controlsTextRetro: 'Controls:
+
+
+    M1/B - Fire
+
+    R/Y - Reload
+
+    Space/A
+    - Jump
+
+    WS/DPad UD/Left Stick UD - Move
+
+    AD/DPad LR/Left Stick LR - Camera
+
+    1,2,3/Bumpers
+    - Swap Weapon
+
+    Escape/Start - Pause'
+  controlsTextDefault: 'Controls:
+
+
+    M1/B - Fire
+
+    R/Y - Reload
+
+    Space/A
+    - Jump
+
+    WASD/DPad/Left Stick - Move
+
+    Mouse/Right Stick - Camera
+
+    1,2,3/Bumpers
+    - Swap Weapon
+
+    Escape/Start - Pause'
 --- !u!1 &649521062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,8 +1971,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -283.89862, y: 1}
-  m_SizeDelta: {x: 628.0446, y: 500}
+  m_AnchoredPosition: {x: -267.52927, y: 1}
+  m_SizeDelta: {x: 670.4412, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &680341597
 MonoBehaviour:
@@ -2082,7 +2118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -202, y: 175}
+  m_AnchoredPosition: {x: -218, y: 175}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &728369511
@@ -2105,8 +2141,24 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Controls:\n\nM1/B - Fire\nWS/DPad UD/Left Stick UD - Move \nAD/DPad LR/Left
-    Stick LR - Camera\n1,2,3/Bumpers - Swap Weapon\nEscape/Start - Pause"
+  m_text: 'Controls:
+
+
+    M1/B - Fire
+
+    R/Y - Reload
+
+    Space/A - Jump
+
+    WASD/DPad/Left
+    Stick - Move
+
+    Mouse/Right Stick - Camera
+
+    1,2,3/Bumpers - Swap Weapon
+
+    Escape/Start
+    - Pause'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
