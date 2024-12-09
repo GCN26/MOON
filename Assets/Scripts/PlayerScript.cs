@@ -33,10 +33,10 @@ public class PlayerScript : MonoBehaviour
 
     [Header("UI")]
     public TextMeshProUGUI HPText;
-    public TextMeshProUGUI EnemiesRemaining;
+    public TextMeshProUGUI EnemiesRemaining,gameOverText;
     public Image redKeyUI,blueKeyUI,yellowKeyUI;
     public GameObject FadeToBlack,OwIGotHurtRedUIThatFlashes;
-    int numberOfEnemies;
+    public int numberOfEnemies;
     public GameObject PauseUI;
     public Toggle retro;
     public GameObject OptionsPanel;
@@ -44,6 +44,7 @@ public class PlayerScript : MonoBehaviour
     [Header("Victory")]
     public float victoryTimer;
     public bool victoryBool;
+    public float gameTimer;
 
     [Header("HP")]
     public float HP;
@@ -83,7 +84,7 @@ public class PlayerScript : MonoBehaviour
             cursorFree = true;
             if (cursorFree) Cursor.lockState = CursorLockMode.None;
         }
-        if(HP > 0)
+        if(HP > 0 && !victoryBool && numberOfEnemies > 0)
         {
             if (Input.GetButtonDown("Pause"))
             {
@@ -115,10 +116,20 @@ public class PlayerScript : MonoBehaviour
         }
         if (Time.timeScale > 0)
         {
+            gameTimer += Time.deltaTime;
             HurtSource.UnPause();
             AmmoSource.UnPause();
             HealSource.UnPause();
             KeySource.UnPause();
+
+            if(victoryBool || (numberOfEnemies == 0 && gameTimer > 2f))
+            {
+                victoryTimer += Time.deltaTime;
+                gameOverText.text = "Victory";
+                cursorFree = true;
+                if (cursorFree) Cursor.lockState = CursorLockMode.None;
+                FadeToBlack.GetComponent<Image>().color = new Color(0, 0, 0, victoryTimer);
+            }
 
             if (invulnTimer > 0)
             {
@@ -140,7 +151,7 @@ public class PlayerScript : MonoBehaviour
             EnemiesRemaining.text = "Enemies Remaining: " + numberOfEnemies;
 
             if (HP > maxHP) HP = maxHP;
-            if (HP > 0)
+            if (HP > 0 && !victoryBool && numberOfEnemies > 0)
             {
                 PlayerMovement();
                 Debug.DrawRay(mainCam.transform.position, transform.TransformDirection(Vector3.forward) * 25, Color.blue);
@@ -155,16 +166,20 @@ public class PlayerScript : MonoBehaviour
                 {
                     deadPos = this.transform.position;
                 }
-                
-                if(deadTimer > 1.334)
+
+                if (deadTimer > 1.334)
                 {
                     dead = true;
                 }
-                else deadTimer += Time.deltaTime;
-                this.tag = "Dead";
-                HP = 0;
-                FadeToBlack.GetComponent<Image>().color = new Color(0, 0, 0, deadTimer);
-                this.transform.position = Vector3.Lerp(deadPos, new Vector3(deadPos.x,deadPos.y-.8f,deadPos.z), deadTimer * .75f);
+                else if (HP <= 0)
+                {
+                    deadTimer += Time.deltaTime;
+                    HP = 0;
+                    this.tag = "Dead";
+                    FadeToBlack.GetComponent<Image>().color = new Color(0, 0, 0, deadTimer);
+                    this.transform.position = Vector3.Lerp(deadPos, new Vector3(deadPos.x, deadPos.y - .8f, deadPos.z), deadTimer * .75f);
+                }
+                
                 if (dead)
                 {
                  

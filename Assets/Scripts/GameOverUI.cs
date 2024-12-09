@@ -25,7 +25,7 @@ public class GameOverUI : MonoBehaviour
         
         if (timer < 1.1f)
         {
-            if (player.GetComponent<PlayerScript>().dead == true)
+            if (player.GetComponent<PlayerScript>().dead == true|| player.GetComponent<PlayerScript>().victoryBool == true || (player.GetComponent<PlayerScript>().numberOfEnemies == 0 && player.GetComponent<PlayerScript>().gameTimer > 2f))
             {
                 timer += Time.deltaTime;
                 GOUI.SetActive(true);

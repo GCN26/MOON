@@ -6202,14 +6202,19 @@ MonoBehaviour:
   yellowKey: 0
   HPText: {fileID: 1848696187}
   EnemiesRemaining: {fileID: 1146678765}
+  gameOverText: {fileID: 2124078815}
   redKeyUI: {fileID: 474153759}
   blueKeyUI: {fileID: 1913349109}
   yellowKeyUI: {fileID: 1330801863}
   FadeToBlack: {fileID: 1702233161}
   OwIGotHurtRedUIThatFlashes: {fileID: 2112518769}
+  numberOfEnemies: 0
   PauseUI: {fileID: 1963222000}
   retro: {fileID: 765649427}
   OptionsPanel: {fileID: 1278812077}
+  victoryTimer: 0
+  victoryBool: 0
+  gameTimer: 0
   HP: 100
   invulnTimer: 0
   invulnTimerMax: 0
@@ -9282,7 +9287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1963222001
 RectTransform:
   m_ObjectHideFlags: 0
