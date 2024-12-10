@@ -84,9 +84,9 @@ public class GunScript : MonoBehaviour
             ReloadSource.UnPause();
             PumpSource.UnPause();
 
-            ShotSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume*.75f;
-            ReloadSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume * .75f;
-            PumpSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume * .75f;
+            ShotSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
+            ReloadSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
+            PumpSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
 
             if (Input.GetButtonDown("BumperR"))
             {
@@ -506,6 +506,10 @@ public class GunScript : MonoBehaviour
         if (hit.collider.CompareTag("Enemy"))
         {
             hit.collider.GetComponent<EnemyMovement>().HP -= gunDamage;
+        }
+        else if (hit.collider.CompareTag("Box"))
+        {
+            hit.collider.GetComponent<BoxScript>().OwIGotHitSoNowIBreakOpenAndGoAway = true;
         }
     }
     public void ammoPickup(float multiplier)

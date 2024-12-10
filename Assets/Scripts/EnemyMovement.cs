@@ -114,9 +114,7 @@ public class EnemyMovement : MonoBehaviour
     private bool IsTargetVisible()
     {
 
-        Debug.DrawRay(eyes.position, (target.position - eyes.position).normalized * visionRange, Color.red, 0.01f);
-        
-        if (Physics.Raycast(eyes.position,(target.position - eyes.position).normalized, out RaycastHit hit, visionRange, visionBlockers))
+        if (Physics.Raycast(eyes.position,(target.position - eyes.position).normalized, out RaycastHit hit, visionRange*3, visionBlockers))
         {
             //maybe replace with player tag
             if (hit.transform == target)

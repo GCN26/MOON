@@ -150,7 +150,7 @@ MonoBehaviour:
   target: {fileID: 0}
   agent: {fileID: 1879984911101872330}
   minPlayerDist: 3
-  maxPlayerDist: 7.5
+  maxPlayerDist: 30
   healthBar: {fileID: 1599286646850893751}
   hbGameObject: {fileID: 891348585408088989}
   visionRange: 7.5

@@ -27,6 +27,7 @@ public class EnemyDamagePlayer : MonoBehaviour
             {
                 other.GetComponent<PlayerScript>().invulnTimer = 2;
                 other.GetComponent<PlayerScript>().HP -= Damage;
+                other.GetComponent<PlayerScript>().HurtSource.Play();
             }
         }
     }

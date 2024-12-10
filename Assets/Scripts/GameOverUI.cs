@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,16 +14,24 @@ public class GameOverUI : MonoBehaviour
     public Button restartb, menub, quitb;
     public GameObject optionsPanel;
 
+    public bool victoryBool;
+    public GameObject Victory;
+    public TextMeshProUGUI timeTaken, enemiesSpared;
+
     public float timer;
     string currentSceneName;
 
     private void Start()
     {
+        Victory.SetActive(false);
         currentSceneName = SceneManager.GetActiveScene().name;
     }
     void Update()
     {
-        
+        if (player.GetComponent<PlayerScript>().victoryBool == true || (player.GetComponent<PlayerScript>().numberOfEnemies == 0 && player.GetComponent<PlayerScript>().gameTimer > 2f))
+        {
+            victoryBool = true;
+        }
         if (timer < 1.1f)
         {
             if (player.GetComponent<PlayerScript>().dead == true|| player.GetComponent<PlayerScript>().victoryBool == true || (player.GetComponent<PlayerScript>().numberOfEnemies == 0 && player.GetComponent<PlayerScript>().gameTimer > 2f))
@@ -37,6 +46,18 @@ public class GameOverUI : MonoBehaviour
             menubtext.color = new Color(0, 0, 0, timer);
             quitb.GetComponent<Image>().color = new Color(1, 1, 1, timer);
             quitbtext.color = new Color(0, 0, 0, timer);
+
+            if (victoryBool)
+            {
+                Victory.SetActive(true);
+                var time = player.GetComponent<PlayerScript>().gameTimer;
+                int minutes = (int)time / 60;
+                int seconds = (int)time - 60 * minutes;
+                timeTaken.text = "Time: " + string.Format("{0:00}:{1:00}", minutes, seconds);
+                enemiesSpared.text = "Enemies Spared: " + player.GetComponent<PlayerScript>().numberOfEnemies;
+                timeTaken.color = new Color(1, 1, 1, timer);
+                enemiesSpared.color = new Color(1, 1, 1, timer);
+            }
         }
         else
         {

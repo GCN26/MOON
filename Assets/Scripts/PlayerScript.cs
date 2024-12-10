@@ -74,7 +74,7 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-        HurtSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
+        HurtSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume*1.75f;
         AmmoSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
         HealSource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
         KeySource.volume = PlayerSaveSettings.SFXVolume * PlayerSaveSettings.masterVolume;
