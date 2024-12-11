@@ -25346,7 +25346,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 0, z: 0}
   move: {x: 0, y: 0, z: 0}
   mouseSensitivity: 1
-  joyCamSensitivity: 3
+  joyCamSensitivity: 12
   snappiness: 100
   upDownRange: 0
   cursorFree: 0
