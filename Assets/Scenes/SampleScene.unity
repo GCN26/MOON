@@ -2439,7 +2439,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2124078813}
-  - {fileID: 826447113}
   - {fileID: 1682300627}
   - {fileID: 1612061732}
   - {fileID: 672607590}
@@ -3817,18 +3816,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826447112}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1771815280}
   - {fileID: 1690418813}
-  m_Father: {fileID: 523097879}
+  m_Father: {fileID: 2026212245}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300, y: 322}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 300, y: 22}
   m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &836740276
@@ -4863,6 +4862,8 @@ MonoBehaviour:
   pistolRayPoint: {fileID: 1227777261}
   shotgunRayPoint: {fileID: 1344194727}
   lineR: {fileID: 8633367218098933274, guid: b840c81274d655f46880d2a133eea105, type: 3}
+  lightFromFire: {fileID: 0}
+  isDark: 0
   gunSpinSpeed: 7.2
   switchTo: 0
   reloading: 0
@@ -10353,6 +10354,7 @@ RectTransform:
   - {fileID: 107335212}
   - {fileID: 299951533}
   - {fileID: 1702233162}
+  - {fileID: 826447113}
   - {fileID: 523097879}
   - {fileID: 1963222001}
   - {fileID: 1278812078}
