@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3286169648298736769}
   - component: {fileID: 8771492403670719391}
   - component: {fileID: 6717764698355598452}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 6869256319200652007}
   - component: {fileID: 1867776029233084460}
   - component: {fileID: 7909305608453351430}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: DoorYellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 2526428962208672300}
   - component: {fileID: 4543918743757257967}
   - component: {fileID: 1142826575942933738}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 5590607591849637547}
   - component: {fileID: 4669684695086946143}
   - component: {fileID: 1189263834245430456}
-  m_Layer: 2
+  m_Layer: 3
   m_Name: DoorTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

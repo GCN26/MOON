@@ -36,6 +36,8 @@ public class GunScript : MonoBehaviour
     public GameObject knifeRotate, knifeModel;
     public GameObject pistolRayPoint, shotgunRayPoint;
     public LineRenderer lineR;
+    public GameObject lightFromFire;
+    public bool isDark;
 
     [Header("Rotations")]
     private Quaternion startingRot;
@@ -141,7 +143,7 @@ public class GunScript : MonoBehaviour
                 shotgunReserve = maxShotgunReserve;
             }
 
-            if (Input.GetButtonDown("Reload"))
+            if (Input.GetButtonDown("Reload") && !shootRotBool)
             {
                 if (SelectedGun == Gun.Pistol)
                 {
@@ -353,14 +355,14 @@ public class GunScript : MonoBehaviour
 
     public void TriggerGun()
     {
-        if (SelectedGun == Gun.Pistol && !reloading && !reloadAmmoBool)
+        if (SelectedGun == Gun.Pistol && !reloading && !reloadAmmoBool && !reloadCheck)
         {
             if (pistolModel.GetComponent<PistolAnimationScript>().fire == false)
             {
                 PistolShoot();
              }
         }
-        else if(SelectedGun == Gun.Shotgun && !reloading && !reloadAmmoBool)
+        else if(SelectedGun == Gun.Shotgun && !reloading && !reloadAmmoBool && !reloadCheck)
         {
             if (shotgunModel.GetComponent<ShotgunAnimationScript>().pump == false)
             {
@@ -388,6 +390,12 @@ public class GunScript : MonoBehaviour
                 mark.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
 
                 calcHitEnemy(hit);
+            }
+            if (isDark)
+            {
+                GameObject lightFromGun = Instantiate(lightFromFire);
+                lightFromGun.transform.rotation = this.transform.rotation;
+                lightFromGun.transform.position = pistolRayPoint.transform.position;
             }
             LineRenderer lineE = Instantiate(lineR);
             lineE.positionCount = 2;
@@ -420,6 +428,12 @@ public class GunScript : MonoBehaviour
                     mark.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
 
                     calcHitEnemy(hit);
+                }
+                if (isDark && i == 0)
+                {
+                    GameObject lightFromGun = Instantiate(lightFromFire);
+                    lightFromGun.transform.rotation = this.transform.rotation;
+                    lightFromGun.transform.position = pistolRayPoint.transform.position;
                 }
                 LineRenderer lineE = Instantiate(lineR);
                 lineE.positionCount = 2;

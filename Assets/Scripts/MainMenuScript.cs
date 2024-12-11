@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
 {
-    public GameObject OptionsPanel,CreditsPanel;
+    public GameObject OptionsPanel,CreditsPanel,LevelSelectPanel;
     public Toggle retro;
     public TextMeshProUGUI Controls;
     [TextArea(15, 20)]
@@ -29,12 +30,20 @@ public class MainMenuScript : MonoBehaviour
     }
     public void LevelSelect()
     {
-        //load level select panel
         OptionsPanel.SetActive(false);
         CreditsPanel.SetActive(false);
+        if (LevelSelectPanel.activeSelf == true)
+        {
+            LevelSelectPanel.SetActive(false);
+        }
+        else
+        {
+            LevelSelectPanel.SetActive(true);
+        }
     }
     public void Options()
     {
+        LevelSelectPanel.SetActive(false);
         CreditsPanel.SetActive(false);
         if (OptionsPanel.activeSelf == true)
         {
@@ -47,6 +56,7 @@ public class MainMenuScript : MonoBehaviour
     }
     public void Credits()
     {
+        LevelSelectPanel.SetActive(false);
         OptionsPanel.SetActive(false);
         if (CreditsPanel.activeSelf == true)
         {
@@ -60,5 +70,13 @@ public class MainMenuScript : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+    public void Level1Button()
+    {
+        SceneManager.LoadScene("Level1");
+    }
+    public void Level2Button()
+    {
+        SceneManager.LoadScene("Level2");
     }
 }

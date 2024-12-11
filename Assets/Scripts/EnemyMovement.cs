@@ -176,6 +176,7 @@ public class EnemyMovement : MonoBehaviour
     }
     private void Dead()
     {
+        this.GetComponent<Collider>().enabled = false;
         deadTimer += Time.deltaTime;
         gameObject.GetComponent<Collider>().enabled = false;
         agent.destination = transform.position;
